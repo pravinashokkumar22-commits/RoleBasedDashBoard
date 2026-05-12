@@ -1,9 +1,8 @@
-import { JsonController, Post, Body, Req, UseBefore } from "routing-controllers";
+import { JsonController, Post, Body, Req, UseBefore ,Get } from "routing-controllers";
 import { ContactService } from "../services/ContactService";
-import { AuthMiddleware } from "../middleware/AuthMiddleware";
 import { ContactDTO } from "../dto/AuthDTO";
+import { AuthMiddleware } from "../middleware/AuthMiddleware";
 @JsonController("/contact")
-@UseBefore(AuthMiddleware)
 export class ContactController {
   private service = new ContactService();
   @Post("/")
@@ -19,5 +18,12 @@ export class ContactController {
       message: "Contact submitted successfully",
       data: contact
     };
+  }
+
+  @Get("/")
+  @UseBefore(AuthMiddleware)
+  async getAll() {
+    const contacts = await this.service.getAllContacts();
+    return { success: true, data: contacts };
   }
 }

@@ -20,4 +20,14 @@ export class ContactService {
       throw new Error("Failed to create contact");
     }
   }
+
+  async getAllContacts() {
+    try {
+      const res = await query("SELECT * FROM contact_submissions ORDER BY created_at DESC");
+      return res.rows;
+    } catch (error) {
+      console.error("Get Contacts Error:", error);
+      throw new Error("Failed to retrieve contacts");
+    }
+}
 }
