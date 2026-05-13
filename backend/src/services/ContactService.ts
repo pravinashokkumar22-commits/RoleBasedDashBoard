@@ -9,7 +9,7 @@ export class ContactService {
       );
 
       return res.rows[0];
-
+      
     } catch (error: any) {
       console.error("Create Contact Error:", error);
       // handle specific DB errors

@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { Users, Shield, UserCheck, Mail, ChevronRight } from 'lucide-react';
 import { usersApi } from '../../api/users.api';
 import { useAuth } from '../../hooks/useAuth';
-import type { User } from '../../types';
-
+import type { ContactSubmission, User } from '../../types';
+import { contactApi } from '@/api/contact.api';
+import type { User as UserType } from '../../types';
 export function AdminDashboard() {
   const { user } = useAuth();
 
   const navigate = useNavigate();
   
   const [users, setUsers] = useState<User[]>([]);
-  
+  const [profile, setProfile] = useState<UserType | null>(null);
+  const [contactMessages, setContactMessages] = useState<ContactSubmission[]>([]);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {usersApi.getAll()
@@ -19,18 +21,25 @@ export function AdminDashboard() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
-  
+
+   useEffect(() => {contactApi.getMessages()
+      .then(res => setContactMessages(res.data.data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+    useEffect(() => { usersApi.getMe().then(res => setProfile(res.data)); }, []);
+  console.log(users);
+
   const total   = users.length;
-
   const admins  = users.filter(u => u.role === 'admin').length;
-
   const regular = users.filter(u => u.role !== 'admin').length;
+  const total_message = contactMessages.filter(m => m.message).length;
 
   const stats = [
     { label: 'Total Users',      value: total,   icon: <Users size={20} />,     bg: '#ede9fe', iconColor: '#7c3aed' },
     { label: 'Admin Users',      value: admins,  icon: <Shield size={20} />,    bg: '#ede9fe', iconColor: '#7c3aed' },
     { label: 'Regular Users',    value: regular, icon: <UserCheck size={20} />, bg: '#dcfce7', iconColor: '#16a34a' },
-    { label: 'Contact Messages', value: '—',     icon: <Mail size={20} />,      bg: '#fee2e2', iconColor: '#dc2626' },
+    { label: 'Contact Messages', value: total_message,     icon: <Mail size={20} />,      bg: '#fee2e2', iconColor: '#dc2626' },
   ];
 
   const quickActions = [
@@ -48,7 +57,7 @@ export function AdminDashboard() {
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
         <h2 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-          Welcome back, Admin User!
+          Welcome back, {profile?.name || 'Admin User'}!
         </h2>
         <p style={{ color: 'var(--text-secondary)', fontSize: 14, marginTop: 4 }}>
           Here's what's happening with your dashboard today.

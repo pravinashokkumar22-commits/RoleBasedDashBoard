@@ -49,7 +49,7 @@ export function AdminContactsPage() {
   const [viewSub, setViewSub] = useState<ContactSubmission | null>(null);
 
   useEffect(() => {
-    contactApi.getAll()
+    contactApi.getMessages()
       .then(r => setSubmissions(r.data.data))
       .catch(() => toast.error('Failed to load submissions'))
       .finally(() => setLoading(false));

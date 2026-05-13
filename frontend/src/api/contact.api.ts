@@ -5,6 +5,5 @@ export const contactApi = {
   submit: (data: ContactDTO) =>
     api.post<ApiResponse<ContactSubmission>>('/contact', data),
 
-  getAll: () =>
-    api.get<ApiResponse<ContactSubmission[]>>('/contact'),
+  getMessages: () => api.get<ApiResponse<ContactSubmission[]>>('/contact'),
 };

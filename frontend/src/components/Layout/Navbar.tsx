@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import type { User as UserType } from '../../types';
+import { usersApi } from '@/api/users.api';
 
 // Maps routes to the page title shown in the top bar
 const ROUTE_LABELS: Record<string, string> = {
@@ -13,6 +15,7 @@ const ROUTE_LABELS: Record<string, string> = {
   '/dashboard':       'Profile',
 };
 
+  
 function getInitials(name?: string | null): string {
   if (!name) return 'U';
   return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
@@ -27,6 +30,9 @@ export function Navbar() {
 
   const pageTitle = ROUTE_LABELS[location.pathname] ?? 'Dashboard';
   const isAdmin = user?.role === 'admin';
+  const [profile, setProfile] = useState<UserType | null>(null);
+  useEffect(() => { usersApi.getMe().then(res => setProfile(res.data)); }, []);
+  console.log(profile);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -52,7 +58,7 @@ export function Navbar() {
           style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'transparent', border: 'none', cursor: 'pointer' }}
         >
           <div className="avatar" style={{ width: 36, height: 36 }}>
-            {getInitials(isAdmin ? 'Admin User' : 'User')}
+            {getInitials(profile?.name)}
           </div>
           <ChevronDown
             size={14}

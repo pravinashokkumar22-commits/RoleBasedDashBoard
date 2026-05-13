@@ -55,7 +55,7 @@ export function ProfilePage() {
     { icon: <Shield size={16} />,   label: 'Role',          value: role.charAt(0).toUpperCase() + role.slice(1) },
     { icon: <Calendar size={16} />, label: 'Member Since',  value: profile.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'N/A' },
   ];
-
+  console.log(profile);
   return (
     <div className="fade-in" style={{ maxWidth: 560 }}>
       <div className="card" style={{ padding: 28 }}>

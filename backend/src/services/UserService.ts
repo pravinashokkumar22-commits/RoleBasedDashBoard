@@ -4,13 +4,13 @@ export class UserService {
 
   async getAllUsers() {
     const res = await query(
-      "SELECT id, name, email FROM users"
+      "SELECT id, name, email ,role FROM users"
     );
     return res.rows;
   }
   async getUserById(id: number) {
   const res = await query(
-    "SELECT id, name, email FROM users WHERE id=$1",
+    "SELECT id, name, email, role ,created_at FROM users WHERE id=$1",
     [id]
   );
 

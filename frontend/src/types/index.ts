@@ -34,13 +34,13 @@ export interface ContactDTO {
   message: string;
 }
 
-// ── Domain models
+// ── Domain 
 export interface User {
   id: number;
   name: string;
   email: string;
   role?: 'admin' | 'user';
-  created_at?: string;
+  created_at?: number | string;
 }
 
 export interface ContactSubmission {
