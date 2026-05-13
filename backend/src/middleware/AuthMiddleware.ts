@@ -6,7 +6,6 @@ import { RequestWithUser } from "../types/RequestWithUser";
 export class AuthMiddleware implements ExpressMiddlewareInterface {
   use(req: RequestWithUser, res: Response, next: NextFunction): void {
     const token = req.headers.authorization?.split(" ")[1];
-    console.log("AuthMiddleware - Token:", token);
     if (!token){
       throw new Error("No token provided");
     }
