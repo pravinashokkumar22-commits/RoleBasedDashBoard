@@ -6,8 +6,9 @@ import { useAuth } from '../../hooks/useAuth';
 import type { ContactSubmission, User } from '../../types';
 import { contactApi } from '../../api/contact.api.ts';
 import type { User as UserType } from '../../types';
+
 export function AdminDashboard() {
-  
+
   const { user } = useAuth();
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);

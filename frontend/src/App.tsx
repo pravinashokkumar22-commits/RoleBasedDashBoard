@@ -11,7 +11,7 @@ import { AdminDashboard }   from './pages/admin/AdminDashboard';
 import { AdminUsersPage }   from './pages/admin/AdminUsers';
 import { AdminContactsPage } from './pages/admin/AdminContacts';
 import { ProfilePage }      from './pages/profile/Profile';
-import { UserDashboard }    from './pages/user/UserDashboard';
+import { ProfilePage as UserDashboard }    from './pages/profile/Profile';
 import { SettingsPage }     from './pages/settings/Settings';
 
 export default function App() {

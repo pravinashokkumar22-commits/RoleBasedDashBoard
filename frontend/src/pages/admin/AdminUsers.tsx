@@ -1,160 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Search, Eye, Pencil, Trash2, X, UserPlus, Users } from 'lucide-react';
+import { Search, Eye, Pencil, Trash2, UserPlus, Users } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { usersApi } from '../../api/users.api';
-import { authApi } from '../../api/auth.api';
 import type { User } from '../../types';
-
-function getInitials(name: string) {
-  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-}
-
+import {ViewUserModal} from '../../components/ViewUserModal';
+import { getInitials } from '../../components/GetInitials';
+import { EditUserModal } from '../../components/EditUserModal';
+import { AddUserModal } from '../../components/AddUserModel';
 //  Shared modal shell
-function ModalShell({ title, onClose, children, footer }: {
-  title: string;
-  onClose: () => void;
-  children: React.ReactNode;
-  footer: React.ReactNode;
-}) {
-  return (
-    <div className="modal-backdrop" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="modal-box scale-in">
-        <div className="modal-header">
-          <span className="modal-title">{title}</span>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex' }}>
-            <X size={18} />
-          </button>
-        </div>
-        {children}
-        <div className="modal-footer">{footer}</div>
-      </div>
-    </div>
-  );
-}
-
-// View User Modal
-function ViewUserModal({ user, onClose }: { user: User; onClose: () => void }) {
-  const fields = [
-    { label: 'Full Name', value: user.name },
-    { label: 'Email Address', value: user.email },
-    { label: 'Role', value: user.role ?? 'user' },
-  ];
-  return (
-    <ModalShell title="User Details" onClose={onClose} footer={
-      <button className="btn-secondary" style={{ width: '100%', justifyContent: 'center' }} onClick={onClose}>Close</button>
-    }>
-      <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, paddingBottom: 8 }}>
-        <div className="avatar" style={{ width: 72, height: 72, fontSize: 22, marginBottom: 8 }}>{getInitials(user.name)}</div>
-        <h3 style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>{user.name}</h3>
-        <span className={`badge badge-${user.role ?? 'user'}`}>{(user.role ?? 'user').toUpperCase()}</span>
-      </div>
-      <div style={{ padding: '0 24px' }}>
-        {fields.map(f => (
-          <div key={f.label} className="profile-field">
-            <div>
-              <p className="profile-field-label">{f.label}</p>
-              <p className="profile-field-value">{f.value}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </ModalShell>
-  );
-}
-
-//  Edit User Modal
-function EditUserModal({ user, onClose, onSaved }: { user: User; onClose: () => void; onSaved: (u: User) => void }) {
-  const [form, setForm] = useState({ name: user.name, email: user.email, password: '' });
-  const [loading, setLoading] = useState(false);
-
-  const handleSave = async () => {
-    setLoading(true);
-    try {
-      const payload: { name: string; email: string; password?: string } = { name: form.name, email: form.email };
-      if (form.password) payload.password = form.password;
-      const res = await usersApi.update(user.id, payload);
-      onSaved(res.data.data);
-      toast.success('User updated');
-      onClose();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Update failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <ModalShell title="Edit User" onClose={onClose} footer={
-      <>
-        <button className="btn-secondary" style={{ flex: 1 }} onClick={onClose}>Cancel</button>
-        <button className="btn-primary" style={{ flex: 1 }} onClick={handleSave} disabled={loading}>
-          {loading ? <span className="spinner" /> : 'Save Changes'}
-        </button>
-      </>
-    }>
-      <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <div>
-          <label className="field-label">Name</label>
-          <input className="field-input" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} />
-        </div>
-        <div>
-          <label className="field-label">Email</label>
-          <input className="field-input" type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} />
-        </div>
-        <div>
-          <label className="field-label">New Password <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(leave blank to keep)</span></label>
-          <input className="field-input" type="password" placeholder="••••••••" value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} />
-        </div>
-      </div>
-    </ModalShell>
-  );
-}
-
-//  Add User Modal
-function AddUserModal({ onClose, onAdded }: { onClose: () => void; onAdded: () => void }) {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [loading, setLoading] = useState(false);
-
-  const handleAdd = async () => {
-    setLoading(true);
-    try {
-      await authApi.register(form);
-      toast.success('User created');
-      onAdded();
-      onClose();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Create failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <ModalShell title="Add New User" onClose={onClose} footer={
-      <>
-        <button className="btn-secondary" style={{ flex: 1 }} onClick={onClose}>Cancel</button>
-        <button className="btn-primary" style={{ flex: 1 }} onClick={handleAdd} disabled={loading}>
-          {loading ? <span className="spinner" /> : 'Create User'}
-        </button>
-      </>
-    }>
-      <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {(['name', 'email', 'password'] as const).map(key => (
-          <div key={key}>
-            <label className="field-label" style={{ textTransform: 'capitalize' }}>{key}</label>
-            <input
-              className="field-input"
-              type={key === 'email' ? 'email' : key === 'password' ? 'password' : 'text'}
-              placeholder={`Enter ${key}`}
-              value={form[key]}
-              onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
-            />
-          </div>
-        ))}
-      </div>
-    </ModalShell>
-  );
-}
 
 //  Main Page
 export function AdminUsersPage() {
@@ -248,7 +101,6 @@ export function AdminUsersPage() {
           ))}
         </div>
       )}
-
       {viewUser && <ViewUserModal user={viewUser} onClose={() => setViewUser(null)} />}
       {editUser && (
         <EditUserModal
