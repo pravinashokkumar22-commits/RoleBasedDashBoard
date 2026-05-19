@@ -1,4 +1,4 @@
-// ── Auth 
+//  Auth 
 export interface AuthPayload {
   id: number;
   role: 'admin' | 'user';
@@ -16,7 +16,7 @@ export interface AuthContextType {
   logout: () => void;
 }
 
-// ── API DTOs (match backend exactly) 
+//  API DTOs
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -34,7 +34,7 @@ export interface ContactDTO {
   message: string;
 }
 
-// ── Domain 
+//  Domain 
 export interface User {
   id: number;
   name: string;
@@ -51,7 +51,7 @@ export interface ContactSubmission {
   created_at: string;
 }
 
-// ── API response wrapper
+//  API response wrapper
 export interface ApiResponse<T> {
   success: boolean;
   message: string;

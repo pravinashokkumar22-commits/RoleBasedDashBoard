@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, Settings, LogOut } from 'lucide-react';
-import { useAuth } from '../../hooks/useAuth';
-import type { User as UserType } from '../../types';
-import { usersApi } from '@/api/users.api';
+import { useAuth } from '../hooks/useAuth';
+import type { User as UserType } from '../types';
+import { usersApi } from '../api/users.api';
 
 // Maps routes to the page title shown in the top bar
 const ROUTE_LABELS: Record<string, string> = {
@@ -14,7 +14,6 @@ const ROUTE_LABELS: Record<string, string> = {
   '/admin/settings':  'Settings',
   '/dashboard':       'Profile',
 };
-
   
 function getInitials(name?: string | null): string {
   if (!name) return 'U';
@@ -33,7 +32,6 @@ export function Navbar() {
   const [profile, setProfile] = useState<UserType | null>(null);
   useEffect(() => { usersApi.getMe().then(res => setProfile(res.data)); }, []);
   console.log(profile);
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -47,11 +45,9 @@ export function Navbar() {
 
   const handleLogout = () => { logout(); navigate('/login'); };
   const handleSettings = () => { navigate(isAdmin ? '/admin/settings' : '/dashboard'); setOpen(false); };
-
   return (
     <header className="topbar">
       <h1 className="topbar-title">{pageTitle}</h1>
-
       <div className="dropdown" ref={dropdownRef}>
         <button
           onClick={() => setOpen(v => !v)}
@@ -65,7 +61,6 @@ export function Navbar() {
             style={{ color: 'var(--text-secondary)', transition: 'transform 0.15s', transform: open ? 'rotate(180deg)' : 'none' }}
           />
         </button>
-
         {open && (
           <div className="dropdown-menu">
             <button className="dropdown-item" onClick={handleSettings}>

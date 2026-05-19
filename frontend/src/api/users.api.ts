@@ -2,6 +2,7 @@ import api from './axiosInstance';
 import type { User, ApiResponse } from '../types';
 
 export const usersApi = {
+
   getAll: () =>
     api.get<User[]>('/users'),
 
@@ -13,4 +14,5 @@ export const usersApi = {
 
   delete: (id: number) =>
     api.delete<ApiResponse<null>>(`/users/${id}`),
+
 };

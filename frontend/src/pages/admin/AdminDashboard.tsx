@@ -4,13 +4,12 @@ import { Users, Shield, UserCheck, Mail, ChevronRight } from 'lucide-react';
 import { usersApi } from '../../api/users.api';
 import { useAuth } from '../../hooks/useAuth';
 import type { ContactSubmission, User } from '../../types';
-import { contactApi } from '@/api/contact.api';
+import { contactApi } from '../../api/contact.api.ts';
 import type { User as UserType } from '../../types';
 export function AdminDashboard() {
-  const { user } = useAuth();
-
-  const navigate = useNavigate();
   
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [profile, setProfile] = useState<UserType | null>(null);
   const [contactMessages, setContactMessages] = useState<ContactSubmission[]>([]);
@@ -27,6 +26,7 @@ export function AdminDashboard() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
     useEffect(() => { usersApi.getMe().then(res => setProfile(res.data)); }, []);
   console.log(users);
 

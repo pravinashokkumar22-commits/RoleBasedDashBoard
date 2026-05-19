@@ -39,7 +39,8 @@ export class UserController {
     id,
     body.name,
     body.email,
-    body.password
+    body.password,
+    
   );
 
   // Generate new token (if same user updated)

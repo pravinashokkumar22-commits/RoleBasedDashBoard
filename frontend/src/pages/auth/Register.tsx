@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { authApi } from '../../api/auth.api';
-import { ContactModal } from '../../components/UI/ContactModal';
+import { ContactModal } from '../../pages/contactPage/ContactModel';
 import type { RegisterCredentials } from '../../types';
 
 type Form = RegisterCredentials & { confirmPassword: string };

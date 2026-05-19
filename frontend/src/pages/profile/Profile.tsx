@@ -8,7 +8,6 @@ import type { User as UserType } from '../../types';
 function getInitials(name: string) {
   return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 }
-
 export function ProfilePage() {
   const { user: authUser } = useAuth();
   const [profile, setProfile] = useState<UserType | null>(null);
@@ -16,7 +15,6 @@ export function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [saving, setSaving] = useState(false);
-
   useEffect(() => {
     usersApi.getMe()
       .then(r => {

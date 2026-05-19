@@ -9,7 +9,7 @@ function getInitials(name: string) {
   return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 }
 
-// ── Shared modal shell ─────────────────────────────────────────────────
+//  Shared modal shell
 function ModalShell({ title, onClose, children, footer }: {
   title: string;
   onClose: () => void;
@@ -32,7 +32,7 @@ function ModalShell({ title, onClose, children, footer }: {
   );
 }
 
-// ── View User Modal ────────────────────────────────────────────────────
+// View User Modal
 function ViewUserModal({ user, onClose }: { user: User; onClose: () => void }) {
   const fields = [
     { label: 'Full Name', value: user.name },
@@ -62,7 +62,7 @@ function ViewUserModal({ user, onClose }: { user: User; onClose: () => void }) {
   );
 }
 
-// ── Edit User Modal ────────────────────────────────────────────────────
+//  Edit User Modal
 function EditUserModal({ user, onClose, onSaved }: { user: User; onClose: () => void; onSaved: (u: User) => void }) {
   const [form, setForm] = useState({ name: user.name, email: user.email, password: '' });
   const [loading, setLoading] = useState(false);
@@ -110,7 +110,7 @@ function EditUserModal({ user, onClose, onSaved }: { user: User; onClose: () => 
   );
 }
 
-// ── Add User Modal ─────────────────────────────────────────────────────
+//  Add User Modal
 function AddUserModal({ onClose, onAdded }: { onClose: () => void; onAdded: () => void }) {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
@@ -156,7 +156,7 @@ function AddUserModal({ onClose, onAdded }: { onClose: () => void; onAdded: () =
   );
 }
 
-// ── Main Page ──────────────────────────────────────────────────────────
+//  Main Page
 export function AdminUsersPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);

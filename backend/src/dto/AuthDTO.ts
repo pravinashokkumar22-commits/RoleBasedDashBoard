@@ -4,6 +4,7 @@ export class RegisterDTO {
   name!: string;
   email!: string;
   password!: string;
+  created_at?: number;
 }
 export class LoginDTO {
   email!: string;

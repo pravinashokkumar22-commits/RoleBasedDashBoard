@@ -4,7 +4,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { authApi } from '../../api/auth.api';
 import { useAuth } from '../../hooks/useAuth';
-import { ContactModal } from '../../components/UI/ContactModal';
+import { ContactModal } from '../../pages/contactPage/ContactModel';
 import type { LoginCredentials } from '../../types';
 
 function validate(form: LoginCredentials): Partial<LoginCredentials> {

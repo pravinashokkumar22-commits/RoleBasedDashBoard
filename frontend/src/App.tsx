@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
-import { PrivateRoute, AdminRoute, PublicRoute } from './components/RouteGuards';
-import { DashboardLayout } from './components/Layout/DashboardLayout';
+import { AdminRoute } from './routers/AdminRoute';
+import { PublicRoute } from './routers/PublicRoute';
+import { PrivateRoute } from './routers/PrivateRoute';
+import { DashboardLayout } from './Layout/DashboardLayout';
 import { LoginPage }        from './pages/auth/Login';
 import { RegisterPage }     from './pages/auth/Register';
 import { AdminDashboard }   from './pages/admin/AdminDashboard';
@@ -43,12 +45,12 @@ export default function App() {
 
           {/*Defaults*/}
           <Route path="/"  element={<Navigate to="/login" replace />} />
-          <Route path="*"  element={<Navigate to="/login" replace />} />
+          <Route path="*"  element={<> </>} />
         </Routes>
       </BrowserRouter>
 
       <Toaster
-        position="top-right"
+        position="top-center"
         toastOptions={{
           style: {
             fontFamily: "'DM Sans', sans-serif",
